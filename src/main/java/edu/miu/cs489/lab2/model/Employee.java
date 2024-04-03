@@ -23,4 +23,20 @@ public class Employee {
                 employeeId, firstName, lastName, DateTimeFormatter.ISO_DATE.format(employmentDate), yearlySalary,
                 pensionPlan != null ? pensionPlan.toJsonString() : "null");
     }
+
+    public boolean isQualifiedForPensionPlan() {
+        var futureEnrollmentDate = this.getEmploymentDate().plusYears(5);
+
+        var now = LocalDate.now();
+
+        var startingDayOfNextMonth = LocalDate.of(now.getYear(), now.getMonth().plus(1), 1);
+        var endingDayOfNextMonth = LocalDate.of(now.getYear(), now.getMonth().plus(2), 1).minusDays(1);
+
+        var isAfterOrEqual = futureEnrollmentDate.isAfter(startingDayOfNextMonth)
+                || futureEnrollmentDate.isEqual(startingDayOfNextMonth);
+        var isBeforeOrEqual = futureEnrollmentDate.isBefore(endingDayOfNextMonth)
+                || futureEnrollmentDate.isEqual(endingDayOfNextMonth);
+
+        return isBeforeOrEqual && isAfterOrEqual;
+    }
 }

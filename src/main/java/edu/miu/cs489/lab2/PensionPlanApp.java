@@ -26,25 +26,9 @@ public class PensionPlanApp {
                 System.out.println("------------------------------------------");
         }
 
-        private static boolean filterProductsForEnrollment(Employee employee) {
-                var enrollmentDate = employee.getEmploymentDate().plusYears(5);
-
-                var now = LocalDate.now();
-
-                var startingDayOfNextMonth = LocalDate.of(now.getYear(), now.getMonth().plus(1), 1);
-                var endingDayOfNextMonth = LocalDate.of(now.getYear(), now.getMonth().plus(2), 1).minusDays(1);
-
-                var isAfterOrEqual = enrollmentDate.isAfter(startingDayOfNextMonth)
-                                || enrollmentDate.isEqual(startingDayOfNextMonth);
-                var isBeforeOrEqual = enrollmentDate.isBefore(endingDayOfNextMonth)
-                                || enrollmentDate.isEqual(endingDayOfNextMonth);
-
-                return isBeforeOrEqual && isAfterOrEqual;
-        }
-
         private static void printMonthlyUpcomingEnrollees(Stream<Employee> employees) {
                 var upcomingEnrollees = employees.filter(employee -> employee.getPensionPlan() == null)
-                                .filter(employee -> filterProductsForEnrollment(employee));
+                                .filter(Employee::isQualifiedForPensionPlan);
 
                 printEmployees("Monthly Upcoming Enrollment:", upcomingEnrollees);
         }
@@ -55,7 +39,7 @@ public class PensionPlanApp {
                                                 BigDecimal.valueOf(105945.50),
                                                 new PensionPlan("EX1089", LocalDate.of(2023, 1, 17),
                                                                 BigDecimal.valueOf(100.0))),
-                                new Employee(2L, "Benard", "Shaw", LocalDate.of(2019, 5, 3),
+                                new Employee(2L, "Benard", "Shaw", LocalDate.of(2019, 4, 3),
                                                 BigDecimal.valueOf(197750.00),
                                                 null),
                                 new Employee(3L, "Carly", "Agar", LocalDate.of(2014, 5, 16),
