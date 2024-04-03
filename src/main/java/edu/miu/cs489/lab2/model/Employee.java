@@ -24,7 +24,11 @@ public class Employee {
                 pensionPlan != null ? pensionPlan.toJsonString() : "null");
     }
 
-    public boolean isQualifiedForPensionPlan() {
+    public boolean isQualifiedForUpcomingEnrollment() {
+        if (this.getPensionPlan() != null) {
+            return false;
+        }
+
         var futureEnrollmentDate = this.getEmploymentDate().plusYears(5);
 
         var now = LocalDate.now();

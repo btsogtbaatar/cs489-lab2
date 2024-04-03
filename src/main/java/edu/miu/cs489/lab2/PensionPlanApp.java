@@ -17,6 +17,13 @@ public class PensionPlanApp {
                                                 .thenComparing(Employee::getYearlySalary, Comparator.reverseOrder()));
         }
 
+        private static void printMonthlyUpcomingEnrollees(Stream<Employee> employees) {
+                var upcomingEnrollees = employees
+                                .filter(Employee::isQualifiedForUpcomingEnrollment);
+
+                printEmployees("Monthly Upcoming Enrollment:", upcomingEnrollees);
+        }
+
         private static void printEmployees(String header, Stream<Employee> employees) {
                 String body = employees
                                 .map(Employee::toJsonString).collect(Collectors.joining(","));
@@ -24,13 +31,6 @@ public class PensionPlanApp {
                 System.out.println(header);
                 System.out.println(String.format("[%s%n]", body));
                 System.out.println("------------------------------------------");
-        }
-
-        private static void printMonthlyUpcomingEnrollees(Stream<Employee> employees) {
-                var upcomingEnrollees = employees.filter(employee -> employee.getPensionPlan() == null)
-                                .filter(Employee::isQualifiedForPensionPlan);
-
-                printEmployees("Monthly Upcoming Enrollment:", upcomingEnrollees);
         }
 
         public static void main(String[] args) {
